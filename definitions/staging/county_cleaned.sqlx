@@ -1,0 +1,15 @@
+config {
+  type: "view",
+  schema: "iowa_staging",
+  description: "Cleaned version of the counties table",
+  assertions: {
+    nonNull: ['county', 'county_number'],
+    uniqueKey: ["county_number"]
+  }
+}
+
+SELECT distinct(upper(county)) as county, county_number
+
+FROM ${ref("counties")}
+
+where county is not null

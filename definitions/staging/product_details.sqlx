@@ -1,0 +1,20 @@
+config {
+  type: "view",
+  schema: "iowa_staging",
+  description: "Cleaned version of the product table"
+}
+
+SELECT
+    sales.county_number,
+    products.category_name,
+    CASE
+      WHEN UPPER(category_name) LIKE '%WHISK%' OR UPPER(category_name) LIKE '%VODKA%' THEN 1
+    ELSE 0
+  END
+    AS whisk_or_vodka
+  FROM
+    ${ref("sales")} as sales
+  LEFT JOIN
+    ${ref("products")} AS products
+  ON
+    sales.item_number = products.item_number

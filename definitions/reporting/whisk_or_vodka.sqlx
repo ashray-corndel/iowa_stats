@@ -1,0 +1,21 @@
+config {
+  type: "table",
+  schema: "iowa_reporting",
+  description: "top 10 sales percent of whiskey or vodka in counties"
+}
+
+SELECT
+  DISTINCT(UPPER(county)) as county,
+  ROUND(SUM(whisk_or_vodka)/ COUNT(whisk_or_vodka), 2) as sale_percent
+FROM
+  ${ref("county_cleaned")} as counties
+LEFT JOIN
+  ${ref("product_details")} as whisk_vodka
+ON
+  counties.county_number = whisk_vodka.county_number
+GROUP BY
+  1
+ORDER BY
+  2 DESC
+LIMIT
+  10

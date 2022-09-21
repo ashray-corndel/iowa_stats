@@ -1,0 +1,16 @@
+config {
+  type: "view",
+  schema: "iowa_staging",
+  description: "Cleaned version of the sales table",
+  assertions: {
+    nonNull: ['item_number', 'store_number'],
+    uniqueKey: ["invoice_and_item_number"],
+    rowConditions: [
+      "sale_dollars > 0"
+    ]
+  }
+}
+
+SELECT invoice_and_item_number, item_number, store_number, county_number, sale_dollars
+
+FROM ${ref("sales")}

@@ -1,0 +1,6 @@
+config {
+  type: "declaration",
+  schema: "jlr_training",
+  name: "counties",
+  description: "raw data for all counties in Iowa"
+}

@@ -1,0 +1,6 @@
+config {
+  type: "declaration",
+  schema: "jlr_training",
+  name: "sales",
+  description: "Iowa sales liquor data"
+}
