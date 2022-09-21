@@ -1,0 +1,6 @@
+{
+  "name": "iowa_sales",
+  "dependencies": {
+    "@dataform/core": "2.0.1"
+  }
+}
