@@ -3,7 +3,7 @@ config {
   schema: "iowa_staging",
   description: "Cleaned version of the sales table",
   assertions: {
-    nonNull: ['item_number', 'store_number'],
+    nonNull: ['item_number'],
     uniqueKey: ["invoice_and_item_number"],
     rowConditions: [
       "sale_dollars > 0"

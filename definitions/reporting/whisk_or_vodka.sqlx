@@ -3,6 +3,24 @@ config {
   schema: "iowa_reporting",
   description: "top 10 sales percent of whiskey or vodka in counties"
 }
+with whisk_vodka as 
+(
+  SELECT
+    sales.county_number,
+    products.category_name,
+    CASE
+      WHEN category_name LIKE '%WHISK%' OR category_name LIKE '%VODKA%' THEN 1
+    ELSE 0
+  END
+    AS whisk_or_vodka
+  FROM
+    ${ref("sales_details")} as sales
+  LEFT JOIN
+    ${ref("product_details")} AS products
+  ON
+    sales.item_number = products.item_number
+)
+
 
 SELECT
   DISTINCT(UPPER(county)) as county,
@@ -10,7 +28,7 @@ SELECT
 FROM
   ${ref("county_cleaned")} as counties
 LEFT JOIN
-  ${ref("product_details")} as whisk_vodka
+  whisk_vodka
 ON
   counties.county_number = whisk_vodka.county_number
 GROUP BY

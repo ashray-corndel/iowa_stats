@@ -9,7 +9,5 @@ config {
 }
 
 SELECT distinct(upper(county)) as county, county_number
-
 FROM ${ref("counties")}
-
 where county is not null
