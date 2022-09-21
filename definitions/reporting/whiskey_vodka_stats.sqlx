@@ -1,0 +1,10 @@
+config {
+  type: "table",
+  schema: "iowa_reporting",
+  description: "Whiskey and Vodka Sales Stats for each County"
+}
+
+select a.county, a.sale_percent, b.total_sales, b.total_bottles_sold, b.total_volume_sold
+from ${ref("whisk_or_vodka")} as a
+left join ${ref("whiskvodka_sales")} as b
+on a.county = b.county

@@ -11,6 +11,6 @@ config {
   }
 }
 
-SELECT invoice_and_item_number, item_number, store_number, county_number, sale_dollars
+SELECT invoice_and_item_number, item_number, store_number, county_number, sale_dollars, bottles_sold, bottle_volume_ml
 
 FROM ${ref("sales")}

@@ -1,12 +1,14 @@
 config {
-  type: "table",
-  schema: "iowa_reporting",
+  type: "view",
+  schema: "iowa_staging",
   description: "top 10 sales percent of whiskey or vodka in counties"
 }
+
 with whisk_vodka as 
 (
   SELECT
     sales.county_number,
+    sales.store_number,
     products.category_name,
     CASE
       WHEN category_name LIKE '%WHISK%' OR category_name LIKE '%VODKA%' THEN 1
@@ -28,12 +30,14 @@ SELECT
 FROM
   ${ref("county_cleaned")} as counties
 LEFT JOIN
+  ${ref("distinct_store_county")} as distinct_store
+ON
+  counties.county_number = distinct_store.county_number
+LEFT JOIN
   whisk_vodka
 ON
-  counties.county_number = whisk_vodka.county_number
+  distinct_store.store_number = whisk_vodka.store_number
 GROUP BY
   1
 ORDER BY
   2 DESC
-LIMIT
-  10

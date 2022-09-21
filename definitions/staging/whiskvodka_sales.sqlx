@@ -1,0 +1,48 @@
+config {
+  type: "view",
+  schema: "iowa_staging",
+  description: "top 10 counties with highest sale of whiskey and vodka"
+}
+
+with whisk_vodka as 
+(
+  SELECT
+    sales.county_number,
+    sales.store_number,
+    sales.sale_dollars,
+    sales.bottles_sold,
+    sales.bottle_volume_ml,
+    CASE
+      WHEN category_name LIKE '%WHISK%' OR category_name LIKE '%VODKA%' THEN 1
+    ELSE 0
+  END
+    AS whisk_or_vodka
+  FROM
+    ${ref("sales_details")} as sales
+  LEFT JOIN
+    ${ref("product_details")} AS products
+  ON
+    sales.item_number = products.item_number
+)
+
+
+SELECT
+  DISTINCT(UPPER(county)) as county,
+  sum(sale_dollars) as total_sales,
+  sum(bottles_sold) as total_bottles_sold,
+  sum(bottle_volume_ml) as total_volume_sold
+FROM
+  ${ref("county_cleaned")} as counties
+LEFT JOIN
+  ${ref("distinct_store_county")} as distinct_store
+ON
+  counties.county_number = distinct_store.county_number
+LEFT JOIN
+  whisk_vodka
+ON
+  distinct_store.store_number = whisk_vodka.store_number
+where whisk_or_vodka = 1
+GROUP BY
+  1
+ORDER BY
+  2 DESC

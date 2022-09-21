@@ -1,0 +1,13 @@
+config {
+  type: "view",
+  schema: "iowa_staging",
+  description: "distinct stores and count table",
+  assertions: {
+    uniqueKey: ["store_number", "county_number"]
+  }
+}
+
+SELECT distinct store_number, county_number
+
+FROM ${ref("sales")}
+where county_number is not null
