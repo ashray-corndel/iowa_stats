@@ -1,5 +1,6 @@
 config {
   type: "table",
+  tags: ["reporting", "daily"],
   schema: "iowa_reporting",
   description: "Whiskey and Vodka Sales Stats for each County"
 }
